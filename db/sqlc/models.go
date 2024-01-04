@@ -5,7 +5,6 @@
 package db
 
 import (
-	"database/sql"
 	"time"
 )
 
@@ -18,7 +17,8 @@ type Note struct {
 }
 
 type User struct {
-	ID        int64          `json:"id"`
-	Uid       sql.NullString `json:"uid"`
-	CreatedAt time.Time      `json:"created_at"`
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at"`
 }

@@ -1,8 +1,8 @@
 -- name: CreateUser :one
-INSERT INTO "User"(uid)
-VALUES ($1)
+INSERT INTO "User"(name,password)
+VALUES ($1,$2)
 RETURNING *;
 
 -- name: GetUser :one
 SELECT * FROM "User"
-WHERE uid=$1;
+WHERE name=$1;

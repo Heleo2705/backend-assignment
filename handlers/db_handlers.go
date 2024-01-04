@@ -5,6 +5,8 @@ import (
 	"errors"
 	db "example.com/backend-assignment/db/sqlc"
 	"fmt"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"log"
 	"os"
 )
@@ -12,7 +14,12 @@ import (
 var dbQueries *db.Queries
 
 func InitDB() error {
+
 	var err error
+	err = godotenv.Load()
+	if err != nil {
+		return errors.New(err.Error())
+	}
 	dbDriver := os.Getenv("DB_DRIVER")
 	dbSource := os.Getenv("DB_SOURCE")
 	if dbDriver == "" {

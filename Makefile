@@ -11,10 +11,10 @@ dropdb:
 	sudo docker exec -it NotesDB dropdb notes
 
 migrateup:
-	 migrate -path db/migration -database "postgresql://root:Imgreat5687@@localhost:5432/notes?sslmode=disable" -verbose up
+	 migrate -path db/migrations -database "postgresql://root:12345@@localhost:5432/notes?sslmode=disable" -verbose up
 
 migratedown:
-	migrate -path db/migration -database "postgresql://root:Imgreat5687@@localhost:5432/notes?sslmode=disable" -verbose down
+	migrate -path db/migrations -database "postgresql://root:12345@@localhost:5432/notes?sslmode=disable" -verbose down
 
 sqlc:
 	sqlc generate
