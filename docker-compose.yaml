@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16rc1-alpine3.18
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    container_name: NotesDB
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=12345@
+      - POSTGRES_DB=notes
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - meili
+      - db
+    environment:
+      - DB_SOURCE=postgresql://root:12345@@db:5432/notes?sslmode=disable
+      - MEILI_HOST=http://meili:7700
+      - PORT=api:8080
+    entrypoint: [ "/app/wait-for.sh", "db:5432", "--", "/app/start.sh" ]
+    command: [ "/app/main" ]
+
+  meili:
+    image: getmeili/meilisearch
+    container_name: meili
+    restart: unless-stopped
+    environment:
+      - MEILI_MASTER_KEY=rtGzUjfJMfyENcQAcYp4Z5p9PXSk6dBB2L1RPN8t3Qo
+      - MEILI_ENV=development
+    ports:
+      - "7700:7700"

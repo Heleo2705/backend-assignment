@@ -57,7 +57,7 @@ func main() {
 	})
 	mux.Mount("/api", v1Router)
 	fmt.Printf("Server is starting..")
-	server := http.Server{Addr: ":3000", Handler: mux}
+	server := http.Server{Addr: ":8080", Handler: mux}
 	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
