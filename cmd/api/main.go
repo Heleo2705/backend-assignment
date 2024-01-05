@@ -18,6 +18,10 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = handlers.InitMeili()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
 func main() {
@@ -36,6 +40,20 @@ func main() {
 		r.Use(middlewares.AuthMiddleware)
 		r.Post("/notes", handlers.CreateNote)
 		r.Get("/notes", handlers.GetNotesForUser)
+		r.Put("/notes",handlers.UpdateNote)
+		r.Delete("/notes",handlers.DeleteNotes)
+		
+	})
+	//sharing apis
+	v1Router.Group(func(r chi.Router) {
+		r.Use(middlewares.AuthMiddleware)
+		r.Post("/notes/{id}/share",handlers.ShareNote)
+		r.Get("/notes/share",handlers.GetSharedNotes)
+	})
+	//searching apis
+	v1Router.Group(func(r chi.Router) {
+		r.Use(middlewares.AuthMiddleware)
+		r.Get("/search",handlers.SearchNotes)
 	})
 	mux.Mount("/api", v1Router)
 	fmt.Printf("Server is starting..")

@@ -17,10 +17,11 @@ type Note struct {
 }
 
 type ShareHistory struct {
-	ID       int64     `json:"id"`
-	OwnerID  int64     `json:"owner_id"`
-	SharedID int64     `json:"shared_id"`
-	SharedAt time.Time `json:"shared_at"`
+	ID           int64     `json:"id"`
+	OwnerID      int64     `json:"owner_id"`
+	SharedID     int64     `json:"shared_id"`
+	SharedNoteID int64     `json:"shared_note_id"`
+	SharedAt     time.Time `json:"shared_at"`
 }
 
 type User struct {

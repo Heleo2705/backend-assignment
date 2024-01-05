@@ -10,7 +10,7 @@ import (
 )
 
 const getSharedNotes = `-- name: GetSharedNotes :many
-SELECT id, owner_id, shared_id, shared_at FROM "ShareHistory"
+SELECT id, owner_id, shared_id, shared_note_id, shared_at FROM "ShareHistory"
 WHERE owner_id=$1
 `
 
@@ -27,6 +27,7 @@ func (q *Queries) GetSharedNotes(ctx context.Context, ownerID int64) ([]ShareHis
 			&i.ID,
 			&i.OwnerID,
 			&i.SharedID,
+			&i.SharedNoteID,
 			&i.SharedAt,
 		); err != nil {
 			return nil, err
@@ -43,23 +44,25 @@ func (q *Queries) GetSharedNotes(ctx context.Context, ownerID int64) ([]ShareHis
 }
 
 const shareNote = `-- name: ShareNote :one
-INSERT INTO "ShareHistory"(owner_id,shared_id)
-VALUES ($1,$2)
-RETURNING id, owner_id, shared_id, shared_at
+INSERT INTO "ShareHistory"(owner_id,shared_id,shared_note_id)
+VALUES ($1,$2,$3)
+RETURNING id, owner_id, shared_id, shared_note_id, shared_at
 `
 
 type ShareNoteParams struct {
-	OwnerID  int64 `json:"owner_id"`
-	SharedID int64 `json:"shared_id"`
+	OwnerID      int64 `json:"owner_id"`
+	SharedID     int64 `json:"shared_id"`
+	SharedNoteID int64 `json:"shared_note_id"`
 }
 
 func (q *Queries) ShareNote(ctx context.Context, arg ShareNoteParams) (ShareHistory, error) {
-	row := q.db.QueryRowContext(ctx, shareNote, arg.OwnerID, arg.SharedID)
+	row := q.db.QueryRowContext(ctx, shareNote, arg.OwnerID, arg.SharedID, arg.SharedNoteID)
 	var i ShareHistory
 	err := row.Scan(
 		&i.ID,
 		&i.OwnerID,
 		&i.SharedID,
+		&i.SharedNoteID,
 		&i.SharedAt,
 	)
 	return i, err

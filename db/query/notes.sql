@@ -19,5 +19,5 @@ WHERE user_id=$1 AND id=$2;
 
 -- name: DeleteNote :one
 DELETE FROM "Notes"
-WHERE id=$1
+WHERE id=$2 AND user_id=$1
 RETURNING *;

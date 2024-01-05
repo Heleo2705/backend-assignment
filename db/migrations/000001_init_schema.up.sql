@@ -17,6 +17,7 @@ CREATE TABLE "ShareHistory" (
   "id" BIGSERIAL PRIMARY KEY,
   "owner_id" BIGSERIAL NOT NULL,
   "shared_id" BIGSERIAL NOT NULL,
+  "shared_note_id" BIGSERIAL NOT NULL,
   "shared_at" timestamptz NOT NULL DEFAULT (now())
 );
 
@@ -31,5 +32,7 @@ CREATE INDEX ON "ShareHistory" ("shared_id");
 ALTER TABLE "ShareHistory" ADD FOREIGN KEY ("owner_id") REFERENCES "User" ("id");
 
 ALTER TABLE "ShareHistory" ADD FOREIGN KEY ("shared_id") REFERENCES "User" ("id");
+
+ALTER TABLE "ShareHistory" ADD FOREIGN KEY ("shared_note_id") REFERENCES "Notes" ("id");
 
 ALTER TABLE "Notes" ADD FOREIGN KEY ("user_id") REFERENCES "User" ("id");
