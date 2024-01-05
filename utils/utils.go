@@ -9,12 +9,12 @@ import (
 
 var secretKey = []byte("secretpassword")
 type Claims struct {
-	UserID string `json:"user_id"`
+	UserID int `json:"user_id"`
 	jwt.StandardClaims
 }
 
 // GenerateToken generates a JWT token with the user ID as part of the claims
-func GenerateToken(userID string) (string, error) {
+func GenerateToken(userID int) (string, error) {
 	claims := &Claims{
 		UserID: userID,
 		StandardClaims: jwt.StandardClaims{

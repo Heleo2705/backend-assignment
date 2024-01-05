@@ -12,3 +12,12 @@ RETURNING *;
 -- name: GetNotesForUser :many
 SELECT * FROM "Notes"
 WHERE user_id=$1;
+
+-- name: GetNote :one
+SELECT * FROM "Notes"
+WHERE user_id=$1 AND id=$2;
+
+-- name: DeleteNote :one
+DELETE FROM "Notes"
+WHERE id=$1
+RETURNING *;

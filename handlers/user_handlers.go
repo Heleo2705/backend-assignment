@@ -18,8 +18,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_, err2 := dbQueries.GetUser(r.Context(), params.Name)
-	if err2 != nil {
-		respondWithErr(w, 400, err2.Error())
+	if err2 == nil {
+		respondWithErr(w, 400, "User Already exists")
 		return
 	}
 	user, err := dbQueries.CreateUser(r.Context(), params)
@@ -48,7 +48,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		respondWithErr(w, 404, "Invalid Password")
 		return
 	}
-	token, err := utils.GenerateToken(user.Name)
+
+	token, err := utils.GenerateToken(int(user.ID))
 	type outputToken struct {
 		Token string `json:"name"`
 	}

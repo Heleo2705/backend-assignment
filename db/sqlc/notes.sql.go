@@ -34,6 +34,48 @@ func (q *Queries) CreateNote(ctx context.Context, arg CreateNoteParams) (Note, e
 	return i, err
 }
 
+const deleteNote = `-- name: DeleteNote :one
+DELETE FROM "Notes"
+WHERE id=$1
+RETURNING id, user_id, content, created_at, last_updated
+`
+
+func (q *Queries) DeleteNote(ctx context.Context, id int64) (Note, error) {
+	row := q.db.QueryRowContext(ctx, deleteNote, id)
+	var i Note
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Content,
+		&i.CreatedAt,
+		&i.LastUpdated,
+	)
+	return i, err
+}
+
+const getNote = `-- name: GetNote :one
+SELECT id, user_id, content, created_at, last_updated FROM "Notes"
+WHERE user_id=$1 AND id=$2
+`
+
+type GetNoteParams struct {
+	UserID int64 `json:"user_id"`
+	ID     int64 `json:"id"`
+}
+
+func (q *Queries) GetNote(ctx context.Context, arg GetNoteParams) (Note, error) {
+	row := q.db.QueryRowContext(ctx, getNote, arg.UserID, arg.ID)
+	var i Note
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Content,
+		&i.CreatedAt,
+		&i.LastUpdated,
+	)
+	return i, err
+}
+
 const getNotesForUser = `-- name: GetNotesForUser :many
 SELECT id, user_id, content, created_at, last_updated FROM "Notes"
 WHERE user_id=$1

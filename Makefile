@@ -14,7 +14,7 @@ migrateup:
 	 migrate -path db/migrations -database "postgresql://root:12345@@localhost:5432/notes?sslmode=disable" -verbose up
 
 migratedown:
-	migrate -path db/migrations -database "postgresql://root:12345@@localhost:5432/notes?sslmode=disable" -verbose down
+	migrate -path db/migrations -database "postgresql://root:12345@@localhost:5432/notes?sslmode=disable" -verbose down force 
 
 sqlc:
 	sqlc generate

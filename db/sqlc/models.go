@@ -16,6 +16,13 @@ type Note struct {
 	LastUpdated time.Time `json:"last_updated"`
 }
 
+type ShareHistory struct {
+	ID       int64     `json:"id"`
+	OwnerID  int64     `json:"owner_id"`
+	SharedID int64     `json:"shared_id"`
+	SharedAt time.Time `json:"shared_at"`
+}
+
 type User struct {
 	ID        int64     `json:"id"`
 	Name      string    `json:"name"`
