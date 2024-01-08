@@ -1,5 +1,9 @@
 # Backend Assignment for Speer
 
+## What it contains?
+
+It contains a server that runs with a Database and an http handler that allows you to create an login users with a username and passwords. The user can create, update and delete notes that they write. They can also share notes with other users. It has a hadnler called `searchNotes` which allows a user to search in his notes a speecific query and return all the notes that contain the query.
+
 ## How to run it
 
 Just copy this repo anywhere and type `docker compose up`. Your server will start running on the port `:8080` and meilisearch on `7700`.
